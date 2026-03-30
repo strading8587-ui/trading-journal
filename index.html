@@ -457,7 +457,7 @@
 
     async function saveToCloud() {
         setSyncStatus('loading');
-        updateUI(); // Update UI immediately for user responsiveness
+        updateUI(); 
         
         // Backup locally just in case
         localStorage.setItem('ut_trades_backup', JSON.stringify(trades));
@@ -466,6 +466,10 @@
         try {
             await fetch(CLOUD_URL, {
                 method: "POST",
+                // This header prevents strict CORS blocking on mobile browsers
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                },
                 body: JSON.stringify({ trades: trades, notes: notesData }),
             });
             setSyncStatus('success');
